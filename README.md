@@ -29,6 +29,35 @@ capital letters. This is great when tinkering with the code and when
 writing test cases in plain ASCII. This is in
 [bidi-table-test.el](bidi-table-test.el) -- about 5k.
 
+Here's how it works: by default, `bidi.el` sets `bidi-testing` to `t`
+and this makes it load `bidi-table-test.el` instead of
+`bidi-table.el`. For real development, you want to set `bidi-testing`
+to `nil` before loading `bidi.el`.
+
+To see a test in action, paste the following into a buffer:
+
+```
+;; this is a normal paragraph containing some
+;; words in ARAB and HEBREW.  these strings need to be
+;; reverted.  numbers like 123 should work, even when
+;; ENCLOSED IN ARAB TEXT SUCH AS 4567.89 IS ON THIS LINE
+;; AND ON THE NEXT.
+```
+
+Then run `bidi-logical-to-visual-paragraph` and you should get back
+the following
+
+```
+;; this is a normal paragraph containing some words in BARA and
+;; WERBEH. these strings need to be reverted. numbers like 123 should
+;; work, even when SIHT NO SI 4567.89 SA HCUS TXET BARA NI DESOLCNE
+;; TXEN EHT NO DNA ENIL.
+```
+
+See how all the capital letters got reversed? If you want to work with
+Arabic or Hebrew, you must of course unset `bidi-testing` and thus
+load `bidi-table.el` instead.
+
 The classification of characters in Emacs relies on Category tables.
 In Emacs, these categories can be modified on the Lisp level. Since I
 didn't want to reserve any categories, I'm getting some unused
